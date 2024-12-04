@@ -3,6 +3,37 @@
 
 #include "pch.h"
 #include "Task.h"
+#include <fstream>
+#include <string>
+
+bool Solve(std::string fname, std::string fresult)
+{
+	std::ifstream f(fname);
+	std::ofstream res(fresult);
+	if (f && res)
+	{
+		double a, b, c, x1, x2, d;
+		int roots;
+		while (f >> a >> b >> c)
+		{
+			d = b*b - 4 * a * c;
+			if (d > 0) roots = 2;
+			else if (d == 0) roots = 1;
+			else if (d < 0)roots = 0;
+			switch (roots)
+			{
+			case 2:
+				x1 = (-b + sqrt(d)) / (2 * a);
+				x2 = (-b - sqrt(d)) / (2 * a);
+				res << a << b << c << x1 << x2;
+				break;
+			case 1:
+				x1 = sqrt(d) / (2 * a);
+				res << a << b << c << x1;
+			}
+		}
+	}
+}
 
 /*
 	Реализуйте в данном файле функцию, которая позволяет решать квадратные уравнения, считывая 
