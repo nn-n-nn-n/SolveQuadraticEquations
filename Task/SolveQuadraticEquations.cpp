@@ -14,25 +14,42 @@ bool Solve(std::string fname, std::string fresult)
 	{
 		double a, b, c, x1, x2, d;
 		int roots;
-		while (f >> a >> b >> c)
-		{
-			d = b*b - 4 * a * c;
-			if (d > 0) roots = 2;
-			else if (d == 0) roots = 1;
-			else if (d < 0)roots = 0;
-			switch (roots)
+		while (f >> a >> b >> c)														// считывание коэфицентов
+		{				
+			if (a == 0 && b != 0)														// проверка на линейное уравнение
 			{
-			case 2:
-				x1 = (-b + sqrt(d)) / (2 * a);
-				x2 = (-b - sqrt(d)) / (2 * a);
-				res << a << b << c << x1 << x2;
-				break;
-			case 1:
-				x1 = sqrt(d) / (2 * a);
-				res << a << b << c << x1;
+				x1 = -c / b;
+				res << a << ' ' << b << ' ' << c << ' ' << x1 << '\n';
+			}
+
+			else if (a == 0 && b == 0)													// проверка на присутствие/отсутствие переменной
+				res << a << ' ' << b << ' ' << c << ' ' << "infinity_solutions" << '\n';
+
+			else if (a != 0)															// если есть x^2
+			{
+				d = b * b - 4 * a * c;
+				if (d > 0) roots = 2;
+				else if (d == 0) roots = 1;
+				else if (d < 0)roots = 0;
+				switch (roots)															// проверка кол-ва корней уравнения
+				{
+				case 2:
+					x1 = (-b + sqrt(d)) / (2 * a);
+					x2 = (-b - sqrt(d)) / (2 * a);
+					res << a << ' ' << b << ' ' << c << ' ' << x1 << ' ' << x2 << '\n';
+					break;
+				case 1:
+					x1 = sqrt(d) / (2 * a);
+					res << a << ' ' << b << ' ' << c << ' ' << x1 << '\n';
+					break;
+				case 0:
+					res << a << ' ' << b << ' ' << c << ' ' << "no_solutions" << '\n';
+				}
 			}
 		}
+		return true;
 	}
+	else return false;
 }
 
 /*
